@@ -1,0 +1,48 @@
+---
+import { siteConfig } from '../site.config';
+import ActionBar from './ActionBar.astro';
+---
+
+<section class="pt-8 pb-10 border-b border-zinc-200 dark:border-zinc-800">
+  <div class="space-y-4">
+    <!-- Status Pill (Mobile-responsive) -->
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl sm:rounded-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 max-w-full">
+      <span class="w-2 h-2 shrink-0 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+      <span class="sr-only">Current Status: </span>
+      <span class="sm:hidden font-medium">London, UK • Open to Visa Transfer</span>
+      <span class="hidden sm:inline">{siteConfig.status}</span>
+    </div>
+
+    <!-- Title & Headline -->
+    <div class="space-y-2">
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        {siteConfig.name}
+      </h1>
+      <p class="text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-300 font-normal">
+        {siteConfig.headline}
+      </p>
+    </div>
+
+    <!-- Minimalist Executive Summary -->
+    <div class="pt-2 space-y-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-900/60">
+      <p>
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Currently:</strong> Data Engineer at Sainsbury's (delivering customer support data platform systems in London).
+      </p>
+      <p>
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">What I Do:</strong> Architecting and scaling resilient data platforms, streaming pipelines, and warehouse systems with product velocity.
+      </p>
+      <p>
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Scale & Impact:</strong> 6+ years across high-growth startups and UK enterprise retail (Sainsbury's, Aplikasi Super, FinAccel, Insider); managing petabyte-scale transformations, mission-critical regulatory pipelines, and real-time event ingestion.
+      </p>
+      <p>
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Core Principles:</strong> Pragmatism over hype, zero unnecessary complexity, fast feedback loops, and data as a reliable internal product.
+      </p>
+      <p>
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Mentorship:</strong> Actively mentoring emerging data engineers and analytics practitioners on <a href={siteConfig.social.adplist} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 text-zinc-900 dark:text-zinc-200 hover:text-emerald-700 dark:hover:text-emerald-400">ADPList ↗</a>.
+      </p>
+    </div>
+
+    <!-- Action Bar -->
+    <ActionBar />
+  </div>
+</section>
