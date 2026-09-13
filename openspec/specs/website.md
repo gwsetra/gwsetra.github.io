@@ -11,9 +11,11 @@
 
 ### 1.1 Core Identity
 - **Full Name**: Setra Genyang Wicana
-- **Professional Role**: Data Engineer based in London, UK
+- **Professional Role**: Senior Data Engineer & Tech Lead based in London, UK
 - **Headline**:
   > "Data Engineer based in London. Building data platforms with a product mindset — focused on engineering pace, reliability, and measurable business impact."
+- **Current Position Anchor**:
+  - `Currently: Team Lead, Data Platform at Sainsbury's (London, UK)`
 - **UK Market & Sponsorship Status**:
   - Prominent in-country advantage indicator:  
     `📍 Based in London, UK • Open to UK Skilled Worker Visa transfer opportunities`
@@ -23,6 +25,7 @@
   - *Leadership & Mentorship*: Highlighting both team leadership at Sainsbury's (team of 5) and active community coaching on ADPList.
 
 ### 1.2 Executive Summary (Minimalist & Scan-Friendly)
+- **Currently**: Team Lead, Data Platform at Sainsbury's (leading 5 engineers delivering customer support data systems).
 - **What I Do**: Architecting and scaling resilient data platforms, streaming pipelines, and warehouse systems with product velocity.
 - **Scale & Impact**: 6+ years across high-growth startups and UK enterprise retail (Sainsbury's, Aplikasi Super, FinAccel, Insider); managing petabyte-scale transformations, mission-critical regulatory pipelines, and real-time event ingestion.
 - **Core Principles**: Pragmatism over hype, zero unnecessary complexity, fast feedback loops, and data as a reliable internal product.

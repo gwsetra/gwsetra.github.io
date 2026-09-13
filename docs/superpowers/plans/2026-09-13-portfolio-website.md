@@ -58,8 +58,8 @@ Create `package.json`:
     "@astrojs/check": "^0.9.4",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.5",
-    "@fontsource/geist-sans": "^5.1.0",
-    "@fontsource/jetbrains-mono": "^5.1.1",
+    "@fontsource-variable/geist-sans": "^5.1.0",
+    "@fontsource-variable/jetbrains-mono": "^5.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "astro": "^5.4.2",
     "tailwindcss": "^3.4.17",
@@ -138,12 +138,8 @@ Create `tsconfig.json`:
 
 Create `src/styles/global.css`:
 ```css
-@import '@fontsource/geist-sans/400.css';
-@import '@fontsource/geist-sans/500.css';
-@import '@fontsource/geist-sans/600.css';
-@import '@fontsource/geist-sans/700.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource-variable/geist-sans';
+@import '@fontsource-variable/jetbrains-mono';
 
 @tailwind base;
 @tailwind components;
@@ -211,7 +207,7 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Setra Genyang Wicana",
-  role: "Data Engineer",
+  role: "Senior Data Engineer & Tech Lead",
   location: "London, UK",
   headline: "Data Engineer based in London. Building data platforms with a product mindset — focused on engineering pace, reliability, and measurable business impact.",
   status: "Based in London, UK • Open to UK Skilled Worker Visa transfer opportunities",
@@ -351,6 +347,9 @@ const {
   canonicalUrl = Astro.url.href,
 } = Astro.props;
 
+const siteOrigin = Astro.site ? Astro.site.origin : 'https://gwsetra.github.io';
+const ogImageAbsolute = new URL(image, siteOrigin).href;
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -400,13 +399,13 @@ const structuredData = {
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={ogImageAbsolute} />
 
     <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image" content={ogImageAbsolute} />
 
     <!-- Google Structured Data (JSON-LD) -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
@@ -431,6 +430,15 @@ const structuredData = {
         document.documentElement.setAttribute('data-theme', 'light');
       }
     </script>
+
+    <!-- Cookieless Analytics (UK GDPR Compliant) -->
+    {siteConfig.analytics?.enabled && siteConfig.analytics.token && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: siteConfig.analytics.token })}
+      />
+    )}
   </head>
   <body class="bg-[#fafafa] text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 transition-colors duration-200 antialiased selection:bg-zinc-200 dark:selection:bg-zinc-800">
     <slot />
@@ -511,6 +519,7 @@ import { siteConfig } from '../site.config';
       <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">GitHub</a>
       <a href={siteConfig.social.adplist} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">ADPList</a>
       <a href={siteConfig.social.leetcode} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">LeetCode</a>
+      <a href={siteConfig.social.neetcode} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">NeetCode</a>
     </div>
   </div>
 </footer>
@@ -630,6 +639,31 @@ import { siteConfig } from '../site.config';
   >
     <span class="text-xs font-mono font-medium">LeetCode ↗</span>
   </a>
+
+  <!-- NeetCode -->
+  {siteConfig.social.neetcode && (
+    <a
+      href={siteConfig.social.neetcode}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="NeetCode Profile"
+      class="p-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    >
+      <span class="text-xs font-mono font-medium">NeetCode ↗</span>
+    </a>
+  )}
+
+  <!-- Optional Cal.com / Calendly Link -->
+  {siteConfig.social.calUrl && (
+    <a
+      href={siteConfig.social.calUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    >
+      <span>Schedule Chat ↗</span>
+    </a>
+  )}
 </div>
 
 <script is:inline>
@@ -686,6 +720,9 @@ import ActionBar from './ActionBar.astro';
     <!-- Minimalist Executive Summary -->
     <div class="pt-2 space-y-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-900/60">
       <p>
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Currently:</strong> Team Lead, Data Platform at Sainsbury's (leading 5 engineers delivering customer support data systems in London).
+      </p>
+      <p>
         <strong class="text-zinc-900 dark:text-zinc-200 font-medium">What I Do:</strong> Architecting and scaling resilient data platforms, streaming pipelines, and warehouse systems with product velocity.
       </p>
       <p>
@@ -722,23 +759,24 @@ git commit -m "feat: implement Hero section with verified action bar and copy mi
 ### Task 5: Content Collections & Featured Enterprise Case Studies
 
 **Files:**
-- Create: `src/content/config.ts`
+- Create: `src/content.config.ts`
 - Create: `src/content/projects/aplikasi-super.md`
 - Create: `src/content/projects/finaccel.md`
 - Create: `src/components/CaseStudyCard.astro`
 - Create: `src/pages/projects/[slug].astro`
 
 **Interfaces:**
-- Produces: Astro Content Collection `projects` loaded on homepage and routed via `/projects/[slug]`.
+- Produces: Astro v5 Content Layer collections `projects` and `writing` loaded on homepage and routed via `/projects/[slug]`.
 
-- [ ] **Step 1: Define content collections schema**
+- [ ] **Step 1: Define content collections schema with Astro v5 Content Layer API**
 
-Create `src/content/config.ts`:
+Create `src/content.config.ts`:
 ```typescript
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const projectsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
     company: z.string(),
@@ -752,12 +790,13 @@ const projectsCollection = defineCollection({
 });
 
 const writingCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.date(),
     lang: z.enum(['en', 'id']).default('en'),
+    translationKey: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
@@ -877,7 +916,7 @@ const { project } = Astro.props;
     </div>
 
     <h3 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-      <a href={`/projects/${project.slug}`} class="hover:underline">
+      <a href={`/projects/${project.id.replace(/\.md$/, '')}`} class="hover:underline">
         {project.data.title}
       </a>
     </h3>
@@ -902,7 +941,7 @@ const { project } = Astro.props;
           <span>#{tool}</span>
         ))}
       </div>
-      <a href={`/projects/${project.slug}`} class="font-medium text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+      <a href={`/projects/${project.id.replace(/\.md$/, '')}`} class="font-medium text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
         Read Case →
       </a>
     </div>
@@ -915,7 +954,7 @@ const { project } = Astro.props;
 Create `src/pages/projects/[slug].astro`:
 ```astro
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -923,13 +962,13 @@ import Footer from '../../components/Footer.astro';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map((project) => ({
-    params: { slug: project.slug },
+    params: { slug: project.id.replace(/\.md$/, '') },
     props: { project },
   }));
 }
 
 const { project } = Astro.props;
-const { Content } = await project.render();
+const { Content } = await render(project);
 ---
 
 <BaseLayout title={`${project.data.title} — ${project.data.company}`} description={project.data.summary}>
@@ -975,7 +1014,7 @@ Expected: `0 errors, 0 warnings`.
 - [ ] **Step 7: Commit**
 
 ```bash
-git add src/content/config.ts src/content/projects/aplikasi-super.md src/content/projects/finaccel.md src/components/CaseStudyCard.astro src/pages/projects/\[slug\].astro
+git add src/content.config.ts src/content/projects/aplikasi-super.md src/content/projects/finaccel.md src/components/CaseStudyCard.astro src/pages/projects/\[slug\].astro
 git commit -m "feat: implement Content Collections and case study deep-dive routes"
 ```
 
@@ -1231,13 +1270,12 @@ import { siteConfig } from '../site.config';
 ---
 
 <section id="writing" class="py-10 border-b border-zinc-200 dark:border-zinc-800">
-  <div class="flex items-center justify-between mb-4">
+  <div class="mb-4">
     <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500">
       Writing & Technical Essays
     </h2>
-    <span class="text-xs font-mono text-zinc-400">0 Articles</span>
   </div>
-  <div class="p-5 rounded-lg border border-dashed border-zinc-300 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20 text-center space-y-2">
+  <div class="p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 text-center space-y-2">
     <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">
       Technical essays on data platforms, engineering velocity, and streaming reliability are in progress.
     </p>
@@ -1262,15 +1300,17 @@ git commit -m "feat: implement side projects, career timeline, tech stack, and w
 
 ---
 
-### Task 7: Homepage Assembly & 404 Error Page
+### Task 7: Homepage Assembly, Writing Routes & 404 Error Page
 
 **Files:**
 - Create: `src/pages/index.astro`
 - Create: `src/pages/404.astro`
+- Create: `src/pages/writing/index.astro`
+- Create: `src/pages/writing/[slug].astro`
 
 **Interfaces:**
-- Consumes: All components from Tasks 2–6.
-- Produces: Complete, single-column homepage (`/`) and 404 page.
+- Consumes: All components from Tasks 2–6 and Content Collections.
+- Produces: Complete, single-column homepage (`/`), writing routes (`/writing`, `/writing/[slug]`), and 404 page.
 
 - [ ] **Step 1: Create src/pages/index.astro**
 
@@ -1373,16 +1413,126 @@ import Footer from '../components/Footer.astro';
 </BaseLayout>
 ```
 
-- [ ] **Step 3: Run astro check and build test**
+- [ ] **Step 3: Create src/pages/writing/index.astro**
+
+Create `src/pages/writing/index.astro`:
+```astro
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { siteConfig } from '../../site.config';
+
+const posts = (await getCollection('writing'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<BaseLayout title={`Writing — ${siteConfig.name}`} description="Technical essays on data platforms, distributed systems, and engineering velocity.">
+  <Header />
+  <main class="max-w-2xl mx-auto px-6 py-12">
+    <a href="/" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+      ← Back to Homepage
+    </a>
+    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-2">
+      Writing & Technical Essays
+    </h1>
+    <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-8">
+      Reflections on data systems, streaming reliability, and engineering velocity.
+    </p>
+
+    {posts.length === 0 ? (
+      <div class="p-6 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 text-center space-y-2">
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Technical essays currently in progress.</p>
+        <p class="text-xs text-zinc-500">
+          Connect on <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-zinc-900 dark:hover:text-zinc-100">LinkedIn ↗</a> for updates.
+        </p>
+      </div>
+    ) : (
+      <div class="space-y-4">
+        {posts.map((post) => (
+          <article class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+            <a href={`/writing/${post.id.replace(/\.md$/, '')}`} class="block space-y-1">
+              <div class="flex items-center justify-between text-xs font-mono text-zinc-500">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </time>
+                <span class="uppercase">{post.data.lang}</span>
+              </div>
+              <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                {post.data.title}
+              </h2>
+              <p class="text-xs text-zinc-600 dark:text-zinc-400">
+                {post.data.description}
+              </p>
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </main>
+  <Footer />
+</BaseLayout>
+```
+
+- [ ] **Step 4: Create dynamic route src/pages/writing/[slug].astro**
+
+Create `src/pages/writing/[slug].astro`:
+```astro
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing');
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.md$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} — Setra Genyang Wicana`} description={post.data.description}>
+  <Header />
+  <main class="max-w-2xl mx-auto px-6 py-12">
+    <a href="/writing" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+      ← Back to Writing
+    </a>
+    <header class="space-y-3 pb-8 border-b border-zinc-200 dark:border-zinc-800">
+      <time class="text-xs font-mono text-zinc-500" datetime={post.data.pubDate.toISOString()}>
+        {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+      </time>
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        {post.data.title}
+      </h1>
+      <p class="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
+        {post.data.description}
+      </p>
+    </header>
+    <article class="prose dark:prose-invert prose-zinc max-w-none pt-8 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:bg-zinc-900 dark:prose-pre:bg-zinc-950">
+      <Content />
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+```
+
+- [ ] **Step 5: Run astro check and build test**
 
 Run: `npx astro check && npm run build`  
-Expected: Clean check and successful compilation into `dist/` with routes `/`, `/projects/aplikasi-super`, `/projects/finaccel`, `/404`.
+Expected: Clean check and successful compilation into `dist/` with routes `/`, `/projects/aplikasi-super`, `/projects/finaccel`, `/writing`, `/404`.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add src/pages/index.astro src/pages/404.astro
-git commit -m "feat: assemble single-column homepage and 404 error page"
+git add src/pages/index.astro src/pages/404.astro src/pages/writing/index.astro src/pages/writing/\[slug\].astro
+git commit -m "feat: assemble single-column homepage, writing routes, and 404 page"
 ```
 
 ---
@@ -1399,11 +1549,48 @@ git commit -m "feat: assemble single-column homepage and 404 error page"
 
 - [ ] **Step 1: Generate high-contrast OpenGraph banner image**
 
-Use Python with Pillow or SVG to create `public/og-preview.png` (1200×630px, dark zinc `#09090b` background, high-contrast typography: "Setra Genyang Wicana", "Data Engineer • London, UK", headline, and green accent dot).
+Create an OpenGraph preview banner (`public/og-preview.png`, 1200×630px, dark zinc `#09090b` background with high-contrast typography: "Setra Genyang Wicana", "Senior Data Engineer & Tech Lead • London, UK", headline, and emerald accent dot). Use a Python Pillow script or Node canvas script to output a clean 1200×630 PNG:
+```bash
+python3 -c '
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+img = Image.new("RGB", (1200, 630), color="#09090b")
+draw = ImageDraw.Draw(img)
+
+# Accent Dot & Status
+draw.ellipse([80, 85, 96, 101], fill="#10b981")
+draw.text((115, 83), "LONDON, UK • OPEN TO VISA TRANSFER", fill="#71717a")
+
+# Name & Title
+draw.text((80, 160), "Setra Genyang Wicana", fill="#fafafa")
+draw.text((80, 250), "Senior Data Engineer & Tech Lead", fill="#10b981")
+
+# Subheading / Focus
+draw.text((80, 340), "Architecting resilient data platforms, streaming pipelines,", fill="#a1a1aa")
+draw.text((80, 385), "and warehouse systems with a product mindset.", fill="#a1a1aa")
+
+# Domain anchor
+draw.text((80, 520), "gwsetra.github.io", fill="#71717a")
+
+os.makedirs("public", exist_ok=True)
+img.save("public/og-preview.png", "PNG")
+print("Generated public/og-preview.png")
+'
+```
 
 - [ ] **Step 2: Place sanitized Web CV placeholder**
 
-Copy sanitized CV or create placeholder `public/cv-setra-wicana.pdf` with clear instructions that Setra will drop in his pre-redacted PDF.
+Create a clean placeholder PDF `public/cv-setra-wicana.pdf` (or copy Setra's pre-redacted web CV) with notice:
+```bash
+python3 -c '
+# Create minimal valid PDF placeholder
+content = b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n200\n%%EOF\n"
+with open("public/cv-setra-wicana.pdf", "wb") as f:
+    f.write(content)
+print("Created public/cv-setra-wicana.pdf placeholder")
+'
+```
 
 - [ ] **Step 3: Create draft writing post to verify collection schema**
 
@@ -1441,7 +1628,7 @@ git commit -m "feat: add OpenGraph social preview asset, CV placeholder, and wri
 - Create: `.github/workflows/deploy.yml`
 
 **Interfaces:**
-- Produces: Automated deployment to GitHub Pages.
+- Produces: Automated deployment to GitHub Pages with automated PII security check.
 
 - [ ] **Step 1: Create deploy.yml workflow**
 
@@ -1485,6 +1672,11 @@ jobs:
       - name: Build static site
         run: npm run build
 
+      - name: Automated PII & Phone Number Assertion Gate
+        run: |
+          echo "Scanning dist/ and public/ for prohibited phone number patterns..."
+          ! grep -rE "(\+44|\+62|07[0-9]{9})" dist/ public/
+
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -1504,15 +1696,21 @@ jobs:
 
 - [ ] **Step 2: Run full build and verification suite**
 
-Run: `npm run check && npm run build`  
+Run:
+```bash
+npm run check && npm run build && ! grep -rE "(\+44|\+62|07[0-9]{9})" dist/ public/
+```
 Expected:
 - `0 errors, 0 warnings`
 - `dist/index.html` exists
 - `dist/projects/aplikasi-super/index.html` exists
 - `dist/projects/finaccel/index.html` exists
+- `dist/writing/index.html` exists
 - `dist/404.html` exists
 - `dist/sitemap-index.xml` exists
 - `dist/robots.txt` exists
+- `dist/og-preview.png` exists
+- Zero PII leaks detected
 
 - [ ] **Step 3: Commit**
 
@@ -1527,18 +1725,20 @@ git commit -m "feat: configure automated GitHub Actions deployment to GitHub Pag
 
 1. **Spec Coverage**:
    - [x] Hero headline & UK visa badge (Task 4)
-   - [x] Executive summary (Task 4)
+   - [x] Executive summary with Sainsbury's anchor (Task 4)
    - [x] Direct Action Bar with Copy Email micro-interaction & fallback (Task 4)
    - [x] Verified URLs: LinkedIn, GitHub, ADPList, LeetCode, NeetCode (Task 1, 4)
    - [x] Case Studies: Aplikasi Super & FinAccel deep dives (Task 5)
    - [x] Side Projects: Compact cards linking to GitHub (Task 6)
    - [x] Career Timeline: Sainsbury's, Super, FinAccel, Insider (Task 6)
    - [x] Toolkit: Categorized platform tags (Task 6)
+   - [x] Writing section: quiet placeholder & `/writing` index / slug scaffolding (Task 6, 7)
    - [x] Theming: Zero-FOUC script & pure CSS No-JS fallback (Task 2)
-   - [x] Self-hosted variable typography via `@fontsource` (Task 1, 2)
+   - [x] Self-hosted variable typography via `@fontsource-variable` (Task 1, 2)
    - [x] Adaptive SVG favicon monogram (Task 2)
    - [x] 10-line print stylesheet (Task 1)
    - [x] OpenGraph 1200x630 card & JSON-LD structured data (Task 2, 8)
+   - [x] Automated PII security assertion gate (Task 9)
    - [x] GitHub Pages CI/CD workflow (Task 9)
 
 2. **Placeholder Scan**:
@@ -1546,4 +1746,4 @@ git commit -m "feat: configure automated GitHub Actions deployment to GitHub Pag
 
 3. **Type Consistency**:
    - `siteConfig` interface in `src/site.config.ts` matches all consuming components.
-   - Collections schema in `src/content/config.ts` matches case study frontmatter.
+   - Collections schema in `src/content.config.ts` matches case study frontmatter and Astro v5 Content Layer.
