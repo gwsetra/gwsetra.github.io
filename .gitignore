@@ -26,3 +26,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Private Discovery PDFs & Redaction
+docs/brainstorm/**/*.pdf
