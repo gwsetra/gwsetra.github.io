@@ -1,0 +1,25 @@
+---
+import { siteConfig } from '../site.config';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="sticky top-0 z-50 backdrop-blur-md bg-[#fafafa]/80 dark:bg-[#09090b]/80 border-b border-zinc-200/60 dark:border-zinc-800/60">
+  <div class="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
+    <!-- Monogram / Brand -->
+    <a href="/" class="font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors text-sm">
+      {siteConfig.name}
+    </a>
+
+    <!-- Nav Links & Toggle -->
+    <nav class="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
+      <a href="/#projects" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+        Projects
+      </a>
+      <a href="/#writing" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+        Writing
+      </a>
+      <div class="h-4 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
