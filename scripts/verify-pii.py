@@ -10,7 +10,7 @@ PROHIBITED_PATTERNS = [
     # Indonesian phone numbers formatted, unformatted, hyphenated, or with (0)
     re.compile(r'(?:\+62\s*(?:\(0\)\s*)?8[\d\s.-]{8,13}|\b08[\d\s.-]{9,14}\b)'),
     # UK Residential Postcodes
-    re.compile(r'\b[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}\b', re.IGNORECASE),
+    re.compile(r'\b[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}\b'),
 ]
 
 def check_text(content: str, filepath: str) -> list:
@@ -49,7 +49,7 @@ def scan_directory(directory: str) -> int:
     for root, _, files in os.walk(directory):
         for file in files:
             path = os.path.join(root, file)
-            if file.endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.woff', '.woff2', '.ttf')):
+            if file.endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.woff', '.woff2', '.ttf', '.css', '.map')):
                 continue
             if file.endswith('.pdf'):
                 hits = inspect_pdf(path)
