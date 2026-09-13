@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { sideProjects } from '../data/projects';
+import WritingPlaceholder from '../components/WritingPlaceholder.astro';
+import Timeline from '../components/Timeline.astro';
+import TechStack from '../components/TechStack.astro';
+import Footer from '../components/Footer.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<BaseLayout>
+  <Header />
+
+  <main id="main-content" class="max-w-2xl mx-auto px-6">
+    <Hero />
+
+    <!-- Featured Case Studies (Tier 1) -->
+    <section id="projects" class="py-10 border-b border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+          Featured Systems & Case Studies
+        </h2>
+        <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400">
+          Deep Dives
+        </span>
+      </div>
+      <div class="space-y-4">
+        {projects.map((project) => (
+          <CaseStudyCard project={project} />
+        ))}
+      </div>
+    </section>
+
+    <!-- Side Projects & Open Source (Tier 2) -->
+    <section class="py-10 border-b border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+          Open-Source & Side Projects
+        </h2>
+        <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400">
+          GitHub
+        </span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {sideProjects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </section>
+
+    <WritingPlaceholder />
+
+    <Timeline />
+
+    <TechStack />
+  </main>
+
+  <Footer />
+</BaseLayout>
