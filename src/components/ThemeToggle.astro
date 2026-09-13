@@ -17,19 +17,21 @@
 </button>
 
 <script is:inline>
-  const handleToggleClick = () => {
-    const element = document.documentElement;
-    const isDark = element.classList.contains('dark');
-    if (isDark) {
-      element.classList.remove('dark');
-      element.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
-    } else {
-      element.classList.add('dark');
-      element.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-    }
-  };
+  (() => {
+    const handleToggleClick = () => {
+      const element = document.documentElement;
+      const isDark = element.classList.contains('dark');
+      if (isDark) {
+        element.classList.remove('dark');
+        element.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        element.classList.add('dark');
+        element.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    };
 
-  document.getElementById('theme-toggle')?.addEventListener('click', handleToggleClick);
+    document.getElementById('theme-toggle')?.addEventListener('click', handleToggleClick);
+  })();
 </script>
