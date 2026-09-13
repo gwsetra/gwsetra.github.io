@@ -58,7 +58,7 @@ Create `package.json`:
     "@astrojs/check": "^0.9.4",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.5",
-    "@fontsource-variable/geist-sans": "^5.1.0",
+    "@fontsource/geist-sans": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "astro": "^5.4.2",
@@ -139,7 +139,7 @@ Create `tsconfig.json`:
 
 Create `src/styles/global.css`:
 ```css
-@import '@fontsource-variable/geist-sans';
+@import '@fontsource/geist-sans';
 @import '@fontsource-variable/jetbrains-mono';
 
 @tailwind base;
@@ -150,6 +150,16 @@ Create `src/styles/global.css`:
   html {
     scroll-behavior: smooth;
     font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Vestibular accessibility: respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -176,6 +186,16 @@ Create `src/styles/global.css`:
   article,
   section {
     break-inside: avoid;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #52525b;
+  }
+  a[href^="mailto:"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #52525b;
   }
 }
 ```
@@ -208,7 +228,7 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Setra Genyang Wicana",
-  role: "Senior Data Engineer & Tech Lead",
+  role: "Data Engineer",
   location: "London, UK",
   headline: "Data Engineer based in London. Building data platforms with a product mindset — focused on engineering pace, reliability, and measurable business impact.",
   status: "Based in London, UK • Open to UK Skilled Worker Visa transfer opportunities",
@@ -295,7 +315,7 @@ Create `src/components/ThemeToggle.astro`:
   id="theme-toggle"
   type="button"
   aria-label="Toggle visual theme"
-  class="group p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+  class="group w-11 h-11 inline-flex items-center justify-center rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
 >
   <!-- Sun icon (visible in dark mode) -->
   <svg class="hidden dark:block w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -408,8 +428,8 @@ const structuredData = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
 
-    <!-- Google Structured Data (JSON-LD) -->
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <!-- Google Structured Data (JSON-LD) with XSS escaping -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
 
     <!-- Zero-FOUC Theme Hydration Script -->
     <script is:inline>
@@ -442,6 +462,10 @@ const structuredData = {
     )}
   </head>
   <body class="bg-[#fafafa] text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 transition-colors duration-200 antialiased selection:bg-zinc-200 dark:selection:bg-zinc-800">
+    <!-- Skip to main content bypass link (WCAG 2.1 SC 2.4.1) -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-zinc-100 dark:focus:bg-zinc-100 dark:focus:text-zinc-900 focus:rounded-md focus:shadow-lg text-xs font-medium">
+      Skip to main content
+    </a>
     <slot />
   </body>
 </html>
@@ -562,9 +586,10 @@ import { siteConfig } from '../site.config';
   <!-- Email Me Direct Link -->
   <a
     href={`mailto:${siteConfig.email}?subject=%5BOpportunity%20%2F%20Inquiry%5D%20Connecting%20with%20Setra`}
-    class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-medium bg-zinc-900 text-zinc-100 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-colors"
+    title={siteConfig.email}
+    class="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-md text-xs font-medium bg-zinc-900 text-zinc-100 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
   >
-    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
     </svg>
     Email Me
@@ -575,23 +600,24 @@ import { siteConfig } from '../site.config';
     id="copy-email-btn"
     type="button"
     data-email={siteConfig.email}
-    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    class="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
   >
-    <span id="copy-email-icon">
+    <span id="copy-email-icon" aria-hidden="true">
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
       </svg>
     </span>
     <span id="copy-email-text">Copy</span>
+    <span id="copy-email-status" class="sr-only" aria-live="polite"></span>
   </button>
 
   <!-- Download CV Button -->
   <a
     href={siteConfig.cvPath}
     download
-    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    class="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
   >
-    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
     </svg>
     Download CV
@@ -603,9 +629,9 @@ import { siteConfig } from '../site.config';
     target="_blank"
     rel="noopener noreferrer"
     aria-label="LinkedIn Profile"
-    class="p-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    class="inline-flex items-center px-3 py-2 min-h-[44px] rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
   >
-    <span class="text-xs font-mono font-medium">LinkedIn ↗</span>
+    <span class="text-xs font-mono font-medium">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></span>
   </a>
 
   <!-- GitHub -->
@@ -614,9 +640,9 @@ import { siteConfig } from '../site.config';
     target="_blank"
     rel="noopener noreferrer"
     aria-label="GitHub Profile"
-    class="p-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    class="inline-flex items-center px-3 py-2 min-h-[44px] rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
   >
-    <span class="text-xs font-mono font-medium">GitHub ↗</span>
+    <span class="text-xs font-mono font-medium">GitHub <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></span>
   </a>
 
   <!-- ADPList -->
@@ -625,34 +651,10 @@ import { siteConfig } from '../site.config';
     target="_blank"
     rel="noopener noreferrer"
     aria-label="ADPList Mentorship Profile"
-    class="p-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+    class="inline-flex items-center px-3 py-2 min-h-[44px] rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
   >
-    <span class="text-xs font-mono font-medium">ADPList ↗</span>
+    <span class="text-xs font-mono font-medium">ADPList <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></span>
   </a>
-
-  <!-- LeetCode -->
-  <a
-    href={siteConfig.social.leetcode}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="LeetCode Profile"
-    class="p-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-  >
-    <span class="text-xs font-mono font-medium">LeetCode ↗</span>
-  </a>
-
-  <!-- NeetCode -->
-  {siteConfig.social.neetcode && (
-    <a
-      href={siteConfig.social.neetcode}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="NeetCode Profile"
-      class="p-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-    >
-      <span class="text-xs font-mono font-medium">NeetCode ↗</span>
-    </a>
-  )}
 
   <!-- Optional Cal.com / Calendly Link -->
   {siteConfig.social.calUrl && (
@@ -660,9 +662,9 @@ import { siteConfig } from '../site.config';
       href={siteConfig.social.calUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+      class="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
     >
-      <span>Schedule Chat ↗</span>
+      <span>Schedule Chat <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></span>
     </a>
   )}
 </div>
@@ -670,7 +672,8 @@ import { siteConfig } from '../site.config';
 <script is:inline>
   const copyBtn = document.getElementById('copy-email-btn');
   const copyText = document.getElementById('copy-email-text');
-  const copyIcon = document.getElementById('copy-email-icon');
+  const copyStatus = document.getElementById('copy-email-status');
+  let copyTimeoutId = null;
 
   copyBtn?.addEventListener('click', async () => {
     const email = copyBtn.getAttribute('data-email');
@@ -679,9 +682,13 @@ import { siteConfig } from '../site.config';
     try {
       await navigator.clipboard.writeText(email);
       if (copyText) copyText.textContent = 'Copied!';
+      if (copyStatus) copyStatus.textContent = 'Email copied to clipboard';
       copyBtn.classList.add('border-emerald-500', 'text-emerald-600', 'dark:text-emerald-400');
-      setTimeout(() => {
+
+      if (copyTimeoutId) clearTimeout(copyTimeoutId);
+      copyTimeoutId = setTimeout(() => {
         if (copyText) copyText.textContent = 'Copy';
+        if (copyStatus) copyStatus.textContent = '';
         copyBtn.classList.remove('border-emerald-500', 'text-emerald-600', 'dark:text-emerald-400');
       }, 2000);
     } catch (err) {
@@ -702,10 +709,12 @@ import ActionBar from './ActionBar.astro';
 
 <section class="pt-8 pb-10 border-b border-zinc-200 dark:border-zinc-800">
   <div class="space-y-4">
-    <!-- Status Pill -->
-    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
-      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span>{siteConfig.status}</span>
+    <!-- Status Pill (Mobile-responsive) -->
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl sm:rounded-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 max-w-full">
+      <span class="w-2 h-2 shrink-0 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+      <span class="sr-only">Current Status: </span>
+      <span class="sm:hidden font-medium">London, UK • Open to Visa Transfer</span>
+      <span class="hidden sm:inline">{siteConfig.status}</span>
     </div>
 
     <!-- Title & Headline -->
@@ -721,7 +730,7 @@ import ActionBar from './ActionBar.astro';
     <!-- Minimalist Executive Summary -->
     <div class="pt-2 space-y-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-900/60">
       <p>
-        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Currently:</strong> Team Lead, Data Platform at Sainsbury's (leading 5 engineers delivering customer support data systems in London).
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Currently:</strong> Data Engineer at Sainsbury's (delivering customer support data platform systems in London).
       </p>
       <p>
         <strong class="text-zinc-900 dark:text-zinc-200 font-medium">What I Do:</strong> Architecting and scaling resilient data platforms, streaming pipelines, and warehouse systems with product velocity.
@@ -733,7 +742,7 @@ import ActionBar from './ActionBar.astro';
         <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Core Principles:</strong> Pragmatism over hype, zero unnecessary complexity, fast feedback loops, and data as a reliable internal product.
       </p>
       <p>
-        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Mentorship:</strong> Actively mentoring emerging data engineers and analytics practitioners on <a href={siteConfig.social.adplist} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 text-zinc-900 dark:text-zinc-200 hover:text-emerald-500">ADPList ↗</a>.
+        <strong class="text-zinc-900 dark:text-zinc-200 font-medium">Mentorship:</strong> Actively mentoring emerging data engineers and analytics practitioners on <a href={siteConfig.social.adplist} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 text-zinc-900 dark:text-zinc-200 hover:text-emerald-700 dark:hover:text-emerald-400">ADPList ↗</a>.
       </p>
     </div>
 
@@ -795,7 +804,7 @@ const writingCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.date(),
+    pubDate: z.coerce.date(),
     lang: z.enum(['en', 'id']).default('en'),
     translationKey: z.string().optional(),
     tags: z.array(z.string()).default([]),
@@ -816,7 +825,7 @@ Create `src/content/projects/aplikasi-super.md`:
 ---
 title: "Zero-to-One Data Platform & BI Overhaul"
 company: "Aplikasi Super"
-role: "Senior Data Engineer"
+role: "Data Engineer"
 timeline: "Dec 2021 — Oct 2023"
 summary: "Built the foundational data engineering strategy and platform from scratch for a rapid supply-chain scale-up across Tier-2/Tier-3 Indonesian cities."
 metrics: ["+50% Processing Speed", "20+ Stakeholder Teams Unblocked", "Zero Data Loss"]
@@ -911,13 +920,13 @@ const { project } = Astro.props;
       <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium">
         {project.data.company} • {project.data.role}
       </span>
-      <span class="text-xs font-mono text-zinc-500">
+      <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400">
         {project.data.timeline}
       </span>
     </div>
 
     <h3 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-      <a href={`/projects/${project.id.replace(/\.md$/, '')}`} class="hover:underline">
+      <a href={`/projects/${project.id}`} class="hover:underline">
         {project.data.title}
       </a>
     </h3>
@@ -937,12 +946,12 @@ const { project } = Astro.props;
 
     <!-- Tech Stack & Link -->
     <div class="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800/60 text-xs">
-      <div class="flex flex-wrap gap-1.5 text-zinc-500 font-mono">
+      <div class="flex flex-wrap gap-1.5 text-zinc-500 dark:text-zinc-400 font-mono">
         {project.data.stack.slice(0, 3).map((tool) => (
           <span>#{tool}</span>
         ))}
       </div>
-      <a href={`/projects/${project.id.replace(/\.md$/, '')}`} class="font-medium text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+      <a href={`/projects/${project.id}`} class="font-medium text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
         Read Case →
       </a>
     </div>
@@ -963,7 +972,7 @@ import Footer from '../../components/Footer.astro';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map((project) => ({
-    params: { slug: project.id.replace(/\.md$/, '') },
+    params: { slug: project.id },
     props: { project },
   }));
 }
@@ -1079,10 +1088,10 @@ export const careerTimeline: TimelineEntry[] = [
   {
     company: "Sainsbury's",
     location: "London, UK",
-    role: "Data Engineer (Team Lead)",
+    role: "Data Engineer",
     period: "Oct 2023 — Present",
     highlights: [
-      "Leading a team of 5 engineers delivering the customer support data platform.",
+      "Leading engineering initiatives delivering the customer support data platform.",
       "Architecting event-driven pipelines and Snowflake transformations.",
       "Reduced pipeline development time by 25% and decreased data errors by 50% across key telemetry tables."
     ],
@@ -1091,7 +1100,7 @@ export const careerTimeline: TimelineEntry[] = [
   {
     company: "Aplikasi Super",
     location: "Surabaya, Indonesia",
-    role: "Senior Data Engineer",
+    role: "Data Engineer",
     period: "Dec 2021 — Oct 2023",
     highlights: [
       "Spearheaded the zero-to-one data platform strategy for hyper-growth supply chain logistics.",
@@ -1131,6 +1140,7 @@ Create `src/data/stack.ts`:
 export interface StackCategory {
   category: string;
   items: string[];
+  links?: { label: string; url: string }[];
 }
 
 export const techStack: StackCategory[] = [
@@ -1148,7 +1158,11 @@ export const techStack: StackCategory[] = [
   },
   {
     category: "Core Languages & Fundamentals",
-    items: ["Python", "SQL", "JavaScript", "Data Structures & Algorithms"]
+    items: ["Python", "SQL", "JavaScript", "Data Structures & Algorithms"],
+    links: [
+      { label: "LeetCode ↗", url: "https://leetcode.com/u/gwsetra/" },
+      { label: "NeetCode ↗", url: "https://neetcode.io/user/SolarSharingan193" }
+    ]
   }
 ];
 ```
@@ -1170,18 +1184,18 @@ const { project } = Astro.props;
 <div class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
   <div class="space-y-2">
     <div class="flex items-center justify-between">
-      <h4 class="text-sm font-semibold font-mono text-zinc-900 dark:text-zinc-100">
+      <h3 class="text-sm font-semibold font-mono text-zinc-900 dark:text-zinc-100">
         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="hover:underline inline-flex items-center gap-1">
-          {project.title} <span class="text-xs">↗</span>
+          {project.title} <span class="text-xs" aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span>
         </a>
-      </h4>
+      </h3>
     </div>
     <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
       {project.description}
     </p>
     <div class="flex flex-wrap gap-1 pt-1">
       {project.tech.map((tool) => (
-        <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+        <span class="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
           {tool}
         </span>
       ))}
@@ -1199,7 +1213,7 @@ import { careerTimeline } from '../data/timeline';
 ---
 
 <section class="py-10 border-b border-zinc-200 dark:border-zinc-800">
-  <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-6">
+  <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-6">
     Career Progression
   </h2>
   <div class="space-y-8">
@@ -1208,11 +1222,11 @@ import { careerTimeline } from '../data/timeline';
         <span class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-600"></span>
         <div class="flex flex-wrap items-baseline justify-between gap-1">
           <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-            {item.company} <span class="font-normal text-xs text-zinc-500">• {item.role}</span>
+            {item.company} <span class="font-normal text-xs text-zinc-500 dark:text-zinc-400">• {item.role}</span>
           </h3>
-          <span class="text-xs font-mono text-zinc-500">{item.period}</span>
+          <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400">{item.period}</span>
         </div>
-        <p class="text-xs text-zinc-500">{item.location}</p>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400">{item.location}</p>
         <ul class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1 pt-1 list-disc list-inside">
           {item.highlights.map((h) => (
             <li>{h}</li>
@@ -1220,7 +1234,7 @@ import { careerTimeline } from '../data/timeline';
         </ul>
         <div class="flex flex-wrap gap-1 pt-1">
           {item.tech.map((t) => (
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <span class="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
               {t}
             </span>
           ))}
@@ -1240,7 +1254,7 @@ import { techStack } from '../data/stack';
 ---
 
 <section class="py-10 border-b border-zinc-200 dark:border-zinc-800">
-  <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-6">
+  <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-6">
     Toolkit & Technologies
   </h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1256,6 +1270,20 @@ import { techStack } from '../data/stack';
             </span>
           ))}
         </div>
+        {cat.links && cat.links.length > 0 && (
+          <div class="flex flex-wrap gap-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-xs">
+            {cat.links.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     ))}
   </div>
@@ -1338,7 +1366,7 @@ const projects = (await getCollection('projects')).sort(
 <BaseLayout>
   <Header />
 
-  <main class="max-w-2xl mx-auto px-6">
+  <main id="main-content" class="max-w-2xl mx-auto px-6">
     <Hero />
 
     <!-- Featured Case Studies (Tier 1) -->
@@ -1550,7 +1578,7 @@ git commit -m "feat: assemble single-column homepage, writing routes, and 404 pa
 
 - [ ] **Step 1: Generate high-contrast OpenGraph banner image**
 
-Create an OpenGraph preview banner (`public/og-preview.png`, 1200×630px, dark zinc `#09090b` background with high-contrast typography: "Setra Genyang Wicana", "Senior Data Engineer & Tech Lead • London, UK", headline, and emerald accent dot). Use Node.js and `sharp` to render the SVG asset to PNG:
+Create an OpenGraph preview banner (`public/og-preview.png`, 1200×630px, dark zinc `#09090b` background with high-contrast typography: "Setra Genyang Wicana", "Data Engineer • London, UK", headline, and emerald accent dot). Use Node.js and `sharp` to render the SVG asset to PNG:
 ```bash
 node -e '
 import("sharp").then(async ({ default: sharp }) => {
@@ -1558,9 +1586,9 @@ import("sharp").then(async ({ default: sharp }) => {
   <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="630" fill="#09090b"/>
     <circle cx="88" cy="93" r="7" fill="#10b981"/>
-    <text x="115" y="99" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#71717a" letter-spacing="0.1em">LONDON, UK • OPEN TO VISA TRANSFER</text>
+    <text x="115" y="99" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#71717a" letter-spacing="0.1em">DATA ENGINEER • LONDON, UK</text>
     <text x="80" y="210" font-family="system-ui, sans-serif" font-size="56" font-weight="700" fill="#fafafa">Setra Genyang Wicana</text>
-    <text x="80" y="275" font-family="system-ui, sans-serif" font-size="30" font-weight="600" fill="#10b981">Senior Data Engineer &amp; Tech Lead</text>
+    <text x="80" y="275" font-family="system-ui, sans-serif" font-size="30" font-weight="600" fill="#10b981">Data Engineer</text>
     <text x="80" y="360" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#a1a1aa">Architecting resilient data platforms, streaming pipelines,</text>
     <text x="80" y="405" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#a1a1aa">and warehouse systems with a product mindset.</text>
     <text x="80" y="530" font-family="system-ui, monospace" font-size="20" font-weight="500" fill="#71717a">gwsetra.github.io</text>
@@ -1617,15 +1645,91 @@ git commit -m "feat: add OpenGraph social preview asset, CV placeholder, and wri
 
 ---
 
-### Task 9: GitHub Actions CI/CD Pipeline & Final Verification Audit
+### Task 9: Automated PII Gate & GitHub Actions CI/CD Pipeline
 
 **Files:**
+- Create: `scripts/verify-pii.py`
 - Create: `.github/workflows/deploy.yml`
 
 **Interfaces:**
-- Produces: Automated deployment to GitHub Pages with automated PII security check.
+- Produces: Decompressed PDF stream inspection, automated PII assertion gate, and GitHub Pages deployment.
 
-- [ ] **Step 1: Create deploy.yml workflow**
+- [ ] **Step 1: Create scripts/verify-pii.py**
+
+Create `scripts/verify-pii.py`:
+```python
+#!/usr/bin/env python3
+import os
+import re
+import sys
+import zlib
+
+PROHIBITED_PATTERNS = [
+    # UK phone numbers formatted or unformatted (+44, 07xxx)
+    re.compile(r'(?:\+44\s?7\d{3}|\b07\d{3}\s?\d{3}\s?\d{3}\b|\+44\d{10})'),
+    # Indonesian phone numbers (+62, 08xxx)
+    re.compile(r'(?:\+62\s?8\d{2}|\b08\d{2}\s?\d{3,4}\s?\d{3,4}\b|\+62\d{9,11})'),
+    # UK Residential Postcodes
+    re.compile(r'\b[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}\b', re.IGNORECASE),
+]
+
+def check_text(content: str, filepath: str) -> list:
+    findings = []
+    for pattern in PROHIBITED_PATTERNS:
+        matches = pattern.findall(content)
+        if matches:
+            findings.append((pattern.pattern, matches))
+    return findings
+
+def inspect_pdf(filepath: str) -> list:
+    findings = []
+    with open(filepath, 'rb') as f:
+        data = f.read()
+    raw_str = data.decode('latin1', errors='ignore')
+    findings.extend(check_text(raw_str, filepath))
+    stream_matches = re.findall(b'stream[\r\n]+(.*?)[\r\n]+endstream', data, re.DOTALL)
+    for stream in stream_matches:
+        try:
+            decompressed = zlib.decompress(stream)
+            dec_str = decompressed.decode('latin1', errors='ignore')
+            findings.extend(check_text(dec_str, filepath))
+        except Exception:
+            pass
+    return findings
+
+def scan_directory(directory: str) -> int:
+    errors = 0
+    if not os.path.exists(directory):
+        return 0
+    for root, _, files in os.walk(directory):
+        for file in files:
+            path = os.path.join(root, file)
+            if file.endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.woff', '.woff2', '.ttf')):
+                continue
+            if file.endswith('.pdf'):
+                hits = inspect_pdf(path)
+            else:
+                try:
+                    with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+                        hits = check_text(f.read(), path)
+                except Exception as e:
+                    continue
+            if hits:
+                print(f"[PII VIOLATION] Prohibited pattern found in {path}: {hits}")
+                errors += 1
+    return errors
+
+if __name__ == '__main__':
+    dirs_to_scan = ['src', 'public', 'dist']
+    total_errors = sum(scan_directory(d) for d in dirs_to_scan)
+    if total_errors > 0:
+        print(f"\nFAILURE: {total_errors} file(s) contained prohibited PII!")
+        sys.exit(1)
+    print("SUCCESS: 0 PII patterns found across src/, public/, and dist/.")
+    sys.exit(0)
+```
+
+- [ ] **Step 2: Create deploy.yml workflow**
 
 Create `.github/workflows/deploy.yml`:
 ```yaml
@@ -1643,7 +1747,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -1668,9 +1772,7 @@ jobs:
         run: npm run build
 
       - name: Automated PII & Phone Number Assertion Gate
-        run: |
-          echo "Scanning dist/ and public/ for prohibited phone number patterns..."
-          ! grep -rE "(\+44|\+62|07[0-9]{9})" dist/ public/
+        run: python3 scripts/verify-pii.py
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -1689,11 +1791,11 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-- [ ] **Step 2: Run full build and verification suite**
+- [ ] **Step 3: Run full build and verification suite**
 
 Run:
 ```bash
-npm run check && npm run build && ! grep -rE "(\+44|\+62|07[0-9]{9})" dist/ public/
+npm run check && npm run build && python3 scripts/verify-pii.py
 ```
 Expected:
 - `0 errors, 0 warnings`
@@ -1705,13 +1807,13 @@ Expected:
 - `dist/sitemap-index.xml` exists
 - `dist/robots.txt` exists
 - `dist/og-preview.png` exists
-- Zero PII leaks detected
+- `SUCCESS: 0 PII patterns found across src/, public/, and dist/.`
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
-git add .github/workflows/deploy.yml
-git commit -m "feat: configure automated GitHub Actions deployment to GitHub Pages"
+git add scripts/verify-pii.py .github/workflows/deploy.yml
+git commit -m "feat: configure automated PII verification script and GitHub Actions Pages deployment"
 ```
 
 ---

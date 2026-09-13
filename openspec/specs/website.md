@@ -11,21 +11,21 @@
 
 ### 1.1 Core Identity
 - **Full Name**: Setra Genyang Wicana
-- **Professional Role**: Senior Data Engineer & Tech Lead based in London, UK
+- **Professional Role**: Data Engineer based in London, UK
 - **Headline**:
   > "Data Engineer based in London. Building data platforms with a product mindset — focused on engineering pace, reliability, and measurable business impact."
 - **Current Position Anchor**:
-  - `Currently: Team Lead, Data Platform at Sainsbury's (London, UK)`
+  - `Currently: Data Engineer at Sainsbury's (London, UK)`
 - **UK Market & Sponsorship Status**:
   - Prominent in-country advantage indicator:  
     `📍 Based in London, UK • Open to UK Skilled Worker Visa transfer opportunities`
 - **Positioning Philosophy**:
   - *Show, Don't Tell*: Pragmatism demonstrated through business outcomes, engineering pace, and reliability rather than buzzwords.
   - *Full-Lifecycle Platform Focus*: Combining software engineering fundamentals with distributed data systems (Snowflake, Kafka, Airflow, DBT, AWS, Kubernetes).
-  - *Leadership & Mentorship*: Highlighting both team leadership at Sainsbury's (team of 5) and active community coaching on ADPList.
+  - *Mentorship & Knowledge Sharing*: Highlighting community coaching on ADPList and robust team collaboration.
 
 ### 1.2 Executive Summary (Minimalist & Scan-Friendly)
-- **Currently**: Team Lead, Data Platform at Sainsbury's (leading 5 engineers delivering customer support data systems).
+- **Currently**: Data Engineer at Sainsbury's (delivering customer support data platform systems in London).
 - **What I Do**: Architecting and scaling resilient data platforms, streaming pipelines, and warehouse systems with product velocity.
 - **Scale & Impact**: 6+ years across high-growth startups and UK enterprise retail (Sainsbury's, Aplikasi Super, FinAccel, Insider); managing petabyte-scale transformations, mission-critical regulatory pipelines, and real-time event ingestion.
 - **Core Principles**: Pragmatism over hype, zero unnecessary complexity, fast feedback loops, and data as a reliable internal product.
@@ -37,17 +37,17 @@
 
 All external touchpoints are strongly typed and centralized in `src/site.config.ts`:
 
-| Channel | Destination / Value | Presentation |
-| :--- | :--- | :--- |
-| **Email** | `setra.wicana.uk@gmail.com` | Direct `mailto:` with pre-filled subject + 1-click Copy button |
-| **Copy Email Feedback** | Micro-interaction | In-button state swap to `[✓ Copied!]` for 2s (fallback to selection) |
-| **LinkedIn** | `https://www.linkedin.com/in/setragenyangw/` | High-contrast external link (`↗`) |
-| **Personal GitHub** | `https://github.com/gwsetra` | High-contrast external link (`↗`) |
-| **ADPList** | `https://adplist.org/mentors/setra-genyang-wicana` | Recognizable ADPList icon link (`↗`) |
-| **LeetCode** | `https://leetcode.com/u/gwsetra/` | Clean LeetCode icon link (`↗`) |
-| **NeetCode** | `https://neetcode.io/user/SolarSharingan193` | Clean NeetCode icon link (`↗`) |
-| **Web-Safe CV** | `/cv-setra-wicana.pdf` | Direct 1-click download (phone number excluded) |
-| **Intro Call (Optional)**| Configurable URL (Cal.com / Calendly) | Displayed only when `calUrl` is configured in `site.config.ts` |
+| Channel | Destination / Value | Presentation | Location |
+| :--- | :--- | :--- | :--- |
+| **Email** | `setra.wicana.uk@gmail.com` | Direct `mailto:` with pre-filled subject | Hero Action Bar |
+| **Copy Email** | Micro-interaction | 1-click in-button state swap to `[✓ Copied!]` (2s debounced) | Hero Action Bar |
+| **Web-Safe CV** | `/cv-setra-wicana.pdf` | Direct 1-click download (phone number excluded) | Hero Action Bar |
+| **LinkedIn** | `https://www.linkedin.com/in/setragenyangw/` | High-contrast external link (`↗`) | Hero & Footer |
+| **Personal GitHub** | `https://github.com/gwsetra` | High-contrast external link (`↗`) | Hero & Footer |
+| **ADPList** | `https://adplist.org/mentors/setra-genyang-wicana` | Recognizable ADPList link (`↗`) | Hero & Footer |
+| **LeetCode** | `https://leetcode.com/u/gwsetra/` | Clean LeetCode link (`↗`) | Footer & Toolkit |
+| **NeetCode** | `https://neetcode.io/user/SolarSharingan193` | Clean NeetCode link (`↗`) | Footer & Toolkit |
+| **Intro Call (Optional)**| Configurable URL (Cal.com / Calendly) | Displayed only when `calUrl` is configured in `site.config.ts` | Hero Action Bar |
 
 *(Note: Work GitHub remains strictly confidential and will not be displayed or linked).*
 
@@ -61,7 +61,7 @@ All external touchpoints are strongly typed and centralized in `src/site.config.
   - Left: Brand monogram / name ("Setra Wicana" linking to `/`).
   - Right: Navigation links (**Projects**, **Writing**) and Sun/Moon theme toggle.
   - Mobile (<640px): Simplifies to brand monogram and theme toggle to preserve vertical screen real estate.
-- **Mobile Action Bar**: High-priority tap targets for `[Email Me]` and `[Download CV]`, with compact icon buttons for LinkedIn, GitHub, ADPList, LeetCode, and NeetCode.
+- **Hero Action Bar**: Streamlined to 6 high-intent executive actions (`[Email Me]`, `[Copy]`, `[Download CV]`, `LinkedIn ↗`, `GitHub ↗`, `ADPList ↗`). Prevents mobile line wrapping and keeps algorithmic proof points in the Footer/Toolkit.
 
 ### 3.2 Color Tokens & Theming Lifecycle
 - **Light Mode**:
@@ -102,12 +102,12 @@ All external touchpoints are strongly typed and centralized in `src/site.config.
    - Header: `WRITING`
    - Content: *"Technical essays on data platforms, engineering velocity, and streaming reliability are in progress. Connect on [LinkedIn] to follow updates."*
 6. **Career Journey / Experience Timeline**:
-   - *Sainsbury's* (London, UK) — Oct 2023–Present (Data Engineer / Team Lead)
-   - *Aplikasi Super* (Surabaya, Indonesia) — Dec 2021–Oct 2023 (Senior Data Engineer)
+   - *Sainsbury's* (London, UK) — Oct 2023–Present (Data Engineer)
+   - *Aplikasi Super* (Surabaya, Indonesia) — Dec 2021–Oct 2023 (Data Engineer)
    - *FinAccel / Kredivo* (Jakarta, Indonesia) — May 2021–Dec 2021 (Data Engineer)
    - *Insider* (Istanbul, Turkey) — Jun 2018–Apr 2021 (Data Engineer & JS Developer)
 7. **Toolkit & Technologies**:
-   - Grouped clean tags: Data Platforms & Warehousing, Orchestration & Streaming, Cloud & Infrastructure, Core Languages & Fundamentals.
+   - Grouped clean tags: Data Platforms & Warehousing, Orchestration & Streaming, Cloud & Infrastructure, Core Languages & Fundamentals (including links to LeetCode & NeetCode).
 8. **Footer**:
    - Location stamp: *"Crafted in London, UK • Setra Genyang Wicana"*.
    - Quick icon links to GitHub, LinkedIn, ADPList, LeetCode, and NeetCode.
@@ -136,7 +136,7 @@ All external touchpoints are strongly typed and centralized in `src/site.config.
 1. **Schema.org Structured Data**:
    - Embedded `Person` and `ProfilePage` JSON-LD script containing verified name, London location, current role at Sainsbury's, education at Sakarya University, and `sameAs` array linking to LinkedIn, GitHub, ADPList, LeetCode, and NeetCode.
 2. **OpenGraph & Twitter Cards**:
-   - Dedicated 1200×630px card at `public/og-preview.png`.
+   - Dedicated 1200×630px card at `public/og-preview.png` with kicker `DATA ENGINEER • LONDON, UK` (visa transfer text omitted from social unfurl to protect active employment discretion).
    - Full `<meta>` tag suite for rich social unfurling in LinkedIn DMs, InMail, Slack, and WhatsApp.
 3. **Crawlability & Sitemaps**:
    - Automated `sitemap-index.xml` via `@astrojs/sitemap`.
