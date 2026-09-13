@@ -19,11 +19,11 @@ const { Content } = await render(post);
 <BaseLayout title={`${post.data.title} — Setra Genyang Wicana`} description={post.data.description}>
   <Header />
   <main id="main-content" class="max-w-2xl mx-auto px-6 py-12">
-    <a href="/writing" class="min-h-[44px] py-2 inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+    <a href="/writing" class="min-h-[44px] py-2 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
       ← Back to Writing
     </a>
     <header class="space-y-3 pb-8 border-b border-zinc-200 dark:border-zinc-800">
-      <time class="text-xs font-mono text-zinc-500 dark:text-zinc-400" datetime={post.data.pubDate.toISOString()}>
+      <time class="text-xs font-medium text-zinc-500 dark:text-zinc-400" datetime={post.data.pubDate.toISOString()}>
         {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
       </time>
       <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">

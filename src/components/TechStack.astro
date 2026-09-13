@@ -3,7 +3,7 @@ import { techStack } from '../data/stack';
 ---
 
 <section class="py-10 border-b border-zinc-200 dark:border-zinc-800">
-  <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-6">
+  <h2 class="text-xs uppercase tracking-wider font-semibold text-zinc-500 dark:text-zinc-400 mb-6">
     Toolkit & Technologies
   </h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -14,7 +14,7 @@ import { techStack } from '../data/stack';
         </h3>
         <div class="flex flex-wrap gap-1.5">
           {cat.items.map((item) => (
-            <span class="text-xs px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium">
               {item}
             </span>
           ))}
@@ -26,7 +26,7 @@ import { techStack } from '../data/stack';
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                class="font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
               >
                 {link.label}
               </a>

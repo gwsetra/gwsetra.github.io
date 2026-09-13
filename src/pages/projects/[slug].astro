@@ -19,12 +19,12 @@ const { Content } = await render(project);
 <BaseLayout title={`${project.data.title} — ${project.data.company}`} description={project.data.summary}>
   <Header />
   <main id="main-content" class="max-w-2xl mx-auto px-6 py-12">
-    <a href="/#projects" class="min-h-[44px] py-2 inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+    <a href="/#projects" class="min-h-[44px] py-2 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
       ← Back to Projects
     </a>
 
     <header class="space-y-3 pb-8 border-b border-zinc-200 dark:border-zinc-800">
-      <div class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium">
+      <div class="text-xs text-emerald-700 dark:text-emerald-400 font-medium">
         {project.data.company} • {project.data.role} ({project.data.timeline})
       </div>
       <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
@@ -36,7 +36,7 @@ const { Content } = await render(project);
 
       <div class="flex flex-wrap gap-2 pt-2">
         {project.data.metrics.map((metric) => (
-          <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
             {metric}
           </span>
         ))}

@@ -11,7 +11,7 @@ const { project } = Astro.props;
 <div class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
   <div class="space-y-2">
     <div class="flex items-center justify-between">
-      <h3 class="text-sm font-semibold font-mono text-zinc-900 dark:text-zinc-100">
+      <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="min-h-[44px] hover:underline inline-flex items-center gap-1">
           {project.title} <span class="text-xs" aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span>
         </a>
@@ -20,9 +20,9 @@ const { project } = Astro.props;
     <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
       {project.description}
     </p>
-    <div class="flex flex-wrap gap-1 pt-1">
+    <div class="flex flex-wrap gap-1.5 pt-1">
       {project.tech.map((tool) => (
-        <span class="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
           {tool}
         </span>
       ))}

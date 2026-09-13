@@ -3,7 +3,7 @@ import { careerTimeline } from '../data/timeline';
 ---
 
 <section class="py-10 border-b border-zinc-200 dark:border-zinc-800">
-  <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-6">
+  <h2 class="text-xs uppercase tracking-wider font-semibold text-zinc-500 dark:text-zinc-400 mb-6">
     Career Progression
   </h2>
   <div class="space-y-8">
@@ -14,7 +14,7 @@ import { careerTimeline } from '../data/timeline';
           <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             {item.company} <span class="font-normal text-xs text-zinc-500 dark:text-zinc-400">• {item.role}</span>
           </h3>
-          <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400">{item.period}</span>
+          <span class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">{item.period}</span>
         </div>
         <p class="text-xs text-zinc-500 dark:text-zinc-400">{item.location}</p>
         <ul class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1 pt-1 list-disc list-inside">
@@ -22,9 +22,9 @@ import { careerTimeline } from '../data/timeline';
             <li>{h}</li>
           ))}
         </ul>
-        <div class="flex flex-wrap gap-1 pt-1">
+        <div class="flex flex-wrap gap-1.5 pt-1">
           {item.tech.map((t) => (
-            <span class="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
               {t}
             </span>
           ))}
