@@ -62,6 +62,7 @@ Create `package.json`:
     "@fontsource-variable/jetbrains-mono": "^5.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "astro": "^5.4.2",
+    "sharp": "^0.33.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
   }
@@ -1549,33 +1550,27 @@ git commit -m "feat: assemble single-column homepage, writing routes, and 404 pa
 
 - [ ] **Step 1: Generate high-contrast OpenGraph banner image**
 
-Create an OpenGraph preview banner (`public/og-preview.png`, 1200×630px, dark zinc `#09090b` background with high-contrast typography: "Setra Genyang Wicana", "Senior Data Engineer & Tech Lead • London, UK", headline, and emerald accent dot). Use a Python Pillow script or Node canvas script to output a clean 1200×630 PNG:
+Create an OpenGraph preview banner (`public/og-preview.png`, 1200×630px, dark zinc `#09090b` background with high-contrast typography: "Setra Genyang Wicana", "Senior Data Engineer & Tech Lead • London, UK", headline, and emerald accent dot). Use Node.js and `sharp` to render the SVG asset to PNG:
 ```bash
-python3 -c '
-from PIL import Image, ImageDraw, ImageFont
-import os
-
-img = Image.new("RGB", (1200, 630), color="#09090b")
-draw = ImageDraw.Draw(img)
-
-# Accent Dot & Status
-draw.ellipse([80, 85, 96, 101], fill="#10b981")
-draw.text((115, 83), "LONDON, UK • OPEN TO VISA TRANSFER", fill="#71717a")
-
-# Name & Title
-draw.text((80, 160), "Setra Genyang Wicana", fill="#fafafa")
-draw.text((80, 250), "Senior Data Engineer & Tech Lead", fill="#10b981")
-
-# Subheading / Focus
-draw.text((80, 340), "Architecting resilient data platforms, streaming pipelines,", fill="#a1a1aa")
-draw.text((80, 385), "and warehouse systems with a product mindset.", fill="#a1a1aa")
-
-# Domain anchor
-draw.text((80, 520), "gwsetra.github.io", fill="#71717a")
-
-os.makedirs("public", exist_ok=True)
-img.save("public/og-preview.png", "PNG")
-print("Generated public/og-preview.png")
+node -e '
+import("sharp").then(async ({ default: sharp }) => {
+  const svg = `
+  <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="630" fill="#09090b"/>
+    <circle cx="88" cy="93" r="7" fill="#10b981"/>
+    <text x="115" y="99" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#71717a" letter-spacing="0.1em">LONDON, UK • OPEN TO VISA TRANSFER</text>
+    <text x="80" y="210" font-family="system-ui, sans-serif" font-size="56" font-weight="700" fill="#fafafa">Setra Genyang Wicana</text>
+    <text x="80" y="275" font-family="system-ui, sans-serif" font-size="30" font-weight="600" fill="#10b981">Senior Data Engineer &amp; Tech Lead</text>
+    <text x="80" y="360" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#a1a1aa">Architecting resilient data platforms, streaming pipelines,</text>
+    <text x="80" y="405" font-family="system-ui, sans-serif" font-size="24" font-weight="400" fill="#a1a1aa">and warehouse systems with a product mindset.</text>
+    <text x="80" y="530" font-family="system-ui, monospace" font-size="20" font-weight="500" fill="#71717a">gwsetra.github.io</text>
+  </svg>
+  `;
+  const fs = await import("fs");
+  if (!fs.existsSync("public")) fs.mkdirSync("public", { recursive: true });
+  await sharp(Buffer.from(svg)).png().toFile("public/og-preview.png");
+  console.log("Generated public/og-preview.png using sharp");
+});
 '
 ```
 
