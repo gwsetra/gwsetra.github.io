@@ -1,0 +1,119 @@
+---
+import { siteConfig } from '../site.config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title = `${siteConfig.name} — ${siteConfig.role}`,
+  description = siteConfig.headline,
+  image = '/og-preview.png',
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+const siteOrigin = Astro.site ? Astro.site.origin : 'https://gwsetra.github.io';
+const ogImageAbsolute = new URL(image, siteOrigin).href;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": siteConfig.name,
+  "jobTitle": siteConfig.role,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "London",
+    "addressCountry": "UK"
+  },
+  "url": "https://gwsetra.github.io",
+  "sameAs": [
+    siteConfig.social.linkedin,
+    siteConfig.social.github,
+    siteConfig.social.adplist,
+    siteConfig.social.leetcode,
+    siteConfig.social.neetcode
+  ],
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Sainsbury's"
+  },
+  "knowsAbout": [
+    "Data Engineering",
+    "Data Platform Architecture",
+    "Snowflake",
+    "Apache Airflow",
+    "DBT",
+    "Apache Kafka",
+    "AWS"
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- OpenGraph Metadata -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageAbsolute} />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbsolute} />
+
+    <!-- Google Structured Data (JSON-LD) with XSS escaping -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
+
+    <!-- Zero-FOUC Theme Hydration Script -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    </script>
+
+    <!-- Cookieless Analytics (UK GDPR Compliant) -->
+    {siteConfig.analytics?.enabled && siteConfig.analytics.token && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: siteConfig.analytics.token })}
+      />
+    )}
+  </head>
+  <body class="bg-[#fafafa] text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 transition-colors duration-200 antialiased selection:bg-zinc-200 dark:selection:bg-zinc-800">
+    <!-- Skip to main content bypass link (WCAG 2.1 SC 2.4.1) -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-zinc-100 dark:focus:bg-zinc-100 dark:focus:text-zinc-900 focus:rounded-md focus:shadow-lg text-xs font-medium">
+      Skip to main content
+    </a>
+    <slot />
+  </body>
+</html>
