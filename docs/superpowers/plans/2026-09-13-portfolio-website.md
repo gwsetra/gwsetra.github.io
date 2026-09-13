@@ -109,7 +109,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"Geist Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        mono: ['"JetBrains Mono Variable"', '"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       maxWidth: {
         '2xl': '44rem', // 704px centered measure
@@ -513,10 +513,10 @@ import ThemeToggle from './ThemeToggle.astro';
 
     <!-- Nav Links & Toggle -->
     <nav class="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-      <a href="/#projects" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+      <a href="/#projects" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
         Projects
       </a>
-      <a href="/#writing" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+      <a href="/#writing" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
         Writing
       </a>
       <div class="h-4 w-px bg-zinc-200 dark:bg-zinc-800"></div>
@@ -539,12 +539,12 @@ import { siteConfig } from '../site.config';
     <div>
       <p>© {new Date().getFullYear()} {siteConfig.name} • {siteConfig.location}</p>
     </div>
-    <div class="flex items-center gap-4">
-      <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">LinkedIn</a>
-      <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">GitHub</a>
-      <a href={siteConfig.social.adplist} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">ADPList</a>
-      <a href={siteConfig.social.leetcode} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">LeetCode</a>
-      <a href={siteConfig.social.neetcode} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">NeetCode</a>
+    <div class="flex flex-wrap items-center gap-4">
+      <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">LinkedIn</a>
+      <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">GitHub</a>
+      <a href={siteConfig.social.adplist} target="_blank" rel="noopener noreferrer" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">ADPList</a>
+      <a href={siteConfig.social.leetcode} target="_blank" rel="noopener noreferrer" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">LeetCode</a>
+      <a href={siteConfig.social.neetcode} target="_blank" rel="noopener noreferrer" class="py-2 min-h-[44px] inline-flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">NeetCode</a>
     </div>
   </div>
 </footer>
@@ -582,7 +582,7 @@ Create `src/components/ActionBar.astro`:
 import { siteConfig } from '../site.config';
 ---
 
-<div class="flex flex-wrap items-center gap-2.5 pt-4">
+<div class="flex flex-wrap items-center gap-2.5 pt-4 no-print">
   <!-- Email Me Direct Link -->
   <a
     href={`mailto:${siteConfig.email}?subject=%5BOpportunity%20%2F%20Inquiry%5D%20Connecting%20with%20Setra`}
@@ -983,8 +983,8 @@ const { Content } = await render(project);
 
 <BaseLayout title={`${project.data.title} — ${project.data.company}`} description={project.data.summary}>
   <Header />
-  <main class="max-w-2xl mx-auto px-6 py-12">
-    <a href="/#projects" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+  <main id="main-content" class="max-w-2xl mx-auto px-6 py-12">
+    <a href="/#projects" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
       ← Back to Projects
     </a>
 
@@ -1300,7 +1300,7 @@ import { siteConfig } from '../site.config';
 
 <section id="writing" class="py-10 border-b border-zinc-200 dark:border-zinc-800">
   <div class="mb-4">
-    <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500">
+    <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
       Writing & Technical Essays
     </h2>
   </div>
@@ -1372,7 +1372,7 @@ const projects = (await getCollection('projects')).sort(
     <!-- Featured Case Studies (Tier 1) -->
     <section id="projects" class="py-10 border-b border-zinc-200 dark:border-zinc-800">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
           Featured Systems & Case Studies
         </h2>
         <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400">
@@ -1389,10 +1389,10 @@ const projects = (await getCollection('projects')).sort(
     <!-- Side Projects & Open Source (Tier 2) -->
     <section class="py-10 border-b border-zinc-200 dark:border-zinc-800">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
           Open-Source & Side Projects
         </h2>
-        <span class="text-xs font-mono text-zinc-500">
+        <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400">
           GitHub
         </span>
       </div>
@@ -1426,7 +1426,7 @@ import Footer from '../components/Footer.astro';
 
 <BaseLayout title="404 — Page Not Found">
   <Header />
-  <main class="max-w-2xl mx-auto px-6 py-24 text-center space-y-4">
+  <main id="main-content" class="max-w-2xl mx-auto px-6 py-24 text-center space-y-4">
     <p class="text-xs font-mono uppercase tracking-widest text-emerald-600 dark:text-emerald-400">404 Error</p>
     <h1 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Page not found</h1>
     <p class="text-sm text-zinc-600 dark:text-zinc-400 max-w-sm mx-auto">
@@ -1460,8 +1460,8 @@ const posts = (await getCollection('writing'))
 
 <BaseLayout title={`Writing — ${siteConfig.name}`} description="Technical essays on data platforms, distributed systems, and engineering velocity.">
   <Header />
-  <main class="max-w-2xl mx-auto px-6 py-12">
-    <a href="/" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+  <main id="main-content" class="max-w-2xl mx-auto px-6 py-12">
+    <a href="/" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
       ← Back to Homepage
     </a>
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-2">
@@ -1474,7 +1474,7 @@ const posts = (await getCollection('writing'))
     {posts.length === 0 ? (
       <div class="p-6 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 text-center space-y-2">
         <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Technical essays currently in progress.</p>
-        <p class="text-xs text-zinc-500">
+        <p class="text-xs text-zinc-500 dark:text-zinc-400">
           Connect on <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-zinc-900 dark:hover:text-zinc-100">LinkedIn ↗</a> for updates.
         </p>
       </div>
@@ -1482,8 +1482,8 @@ const posts = (await getCollection('writing'))
       <div class="space-y-4">
         {posts.map((post) => (
           <article class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-            <a href={`/writing/${post.id.replace(/\.md$/, '')}`} class="block space-y-1">
-              <div class="flex items-center justify-between text-xs font-mono text-zinc-500">
+            <a href={`/writing/${post.id}`} class="block space-y-1">
+              <div class="flex items-center justify-between text-xs font-mono text-zinc-500 dark:text-zinc-400">
                 <time datetime={post.data.pubDate.toISOString()}>
                   {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </time>
@@ -1518,7 +1518,7 @@ import Footer from '../../components/Footer.astro';
 export async function getStaticPaths() {
   const posts = await getCollection('writing');
   return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.md$/, '') },
+    params: { slug: post.id },
     props: { post },
   }));
 }
@@ -1529,12 +1529,12 @@ const { Content } = await render(post);
 
 <BaseLayout title={`${post.data.title} — Setra Genyang Wicana`} description={post.data.description}>
   <Header />
-  <main class="max-w-2xl mx-auto px-6 py-12">
-    <a href="/writing" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
+  <main id="main-content" class="max-w-2xl mx-auto px-6 py-12">
+    <a href="/writing" class="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 mb-8 transition-colors">
       ← Back to Writing
     </a>
     <header class="space-y-3 pb-8 border-b border-zinc-200 dark:border-zinc-800">
-      <time class="text-xs font-mono text-zinc-500" datetime={post.data.pubDate.toISOString()}>
+      <time class="text-xs font-mono text-zinc-500 dark:text-zinc-400" datetime={post.data.pubDate.toISOString()}>
         {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
       </time>
       <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
@@ -1665,10 +1665,10 @@ import sys
 import zlib
 
 PROHIBITED_PATTERNS = [
-    # UK phone numbers formatted or unformatted (+44, 07xxx)
-    re.compile(r'(?:\+44\s?7\d{3}|\b07\d{3}\s?\d{3}\s?\d{3}\b|\+44\d{10})'),
-    # Indonesian phone numbers (+62, 08xxx)
-    re.compile(r'(?:\+62\s?8\d{2}|\b08\d{2}\s?\d{3,4}\s?\d{3,4}\b|\+62\d{9,11})'),
+    # UK phone numbers formatted, unformatted, hyphenated, dot-separated, or with (0)
+    re.compile(r'(?:\+44\s*(?:\(0\)\s*)?7[\d\s.-]{8,12}|\b07[\d\s.-]{9,13}\b)'),
+    # Indonesian phone numbers formatted, unformatted, hyphenated, or with (0)
+    re.compile(r'(?:\+62\s*(?:\(0\)\s*)?8[\d\s.-]{8,13}|\b08[\d\s.-]{9,14}\b)'),
     # UK Residential Postcodes
     re.compile(r'\b[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}\b', re.IGNORECASE),
 ]
@@ -1694,7 +1694,12 @@ def inspect_pdf(filepath: str) -> list:
             dec_str = decompressed.decode('latin1', errors='ignore')
             findings.extend(check_text(dec_str, filepath))
         except Exception:
-            pass
+            try:
+                decompressed = zlib.decompress(stream.strip())
+                dec_str = decompressed.decode('latin1', errors='ignore')
+                findings.extend(check_text(dec_str, filepath))
+            except Exception:
+                pass
     return findings
 
 def scan_directory(directory: str) -> int:
@@ -1808,6 +1813,9 @@ Expected:
 - `dist/robots.txt` exists
 - `dist/og-preview.png` exists
 - `SUCCESS: 0 PII patterns found across src/, public/, and dist/.`
+
+> [!IMPORTANT]
+> **Pre-Push Git Hygiene Directive**: Historical commit `e025a53` in local git history contains the unredacted discovery PDF binary before it was untracked in `c626462`. Before pushing to any public remote repository, local commit history should be squashed or rebased so unredacted historical binary objects are not published.
 
 - [ ] **Step 4: Commit**
 
