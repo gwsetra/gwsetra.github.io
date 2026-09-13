@@ -1,0 +1,59 @@
+@import '@fontsource/geist-sans';
+@import '@fontsource-variable/jetbrains-mono';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Vestibular accessibility: respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Zero-JS media query fallback for dark mode */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) {
+    color-scheme: dark;
+  }
+}
+
+/* Lightweight print cleanup for interview PDF exports */
+@media print {
+  header,
+  footer,
+  button,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  pre,
+  article,
+  section {
+    break-inside: avoid;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #52525b;
+  }
+  a[href^="mailto:"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #52525b;
+  }
+}
