@@ -46,7 +46,7 @@ You MUST strictly follow the **Superpowers development methodology and skills** 
    - Never guess or speculate on fixes.
    - Follow the 4-phase root-cause analysis: Reproduce → Trace → Hypothesize → Fix & Verify.
 
-10. **Completion Verification Gate (`verification-before-completion`):**
+10. **/v (`verification-before-completion`):**
     - Evidence before assertions always.
     - NEVER claim work is complete, passing, or fixed without running verification commands (tests, builds, linters) and confirming real terminal output.
 
