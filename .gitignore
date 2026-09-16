@@ -29,3 +29,6 @@ Thumbs.db
 
 # Private Discovery PDFs & Redaction
 docs/brainstorm/**/*.pdf
+*.pdf
+public/*.pdf
+dist/*.pdf

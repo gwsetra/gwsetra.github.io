@@ -31,17 +31,19 @@ import { siteConfig } from '../site.config';
     <span id="copy-email-status" class="sr-only" aria-live="polite"></span>
   </button>
 
-  <!-- Download CV Button -->
-  <a
-    href={siteConfig.cvPath}
-    download
-    class="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
-  >
-    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-    </svg>
-    Download CV
-  </a>
+  <!-- Download CV Button (rendered only if cvPath is provided) -->
+  {siteConfig.cvPath && (
+    <a
+      href={siteConfig.cvPath}
+      download
+      class="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
+    >
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      Download CV
+    </a>
+  )}
 
   <!-- LinkedIn -->
   <a

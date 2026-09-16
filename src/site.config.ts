@@ -13,7 +13,7 @@ export interface SiteConfig {
     neetcode: string;
     calUrl?: string;
   };
-  cvPath: string;
+  cvPath?: string;
   analytics?: {
     enabled: boolean;
     token?: string;
@@ -35,7 +35,7 @@ export const siteConfig: SiteConfig = {
     neetcode: "https://neetcode.io/user/SolarSharingan193",
     calUrl: "", // Optional 15-min chat link
   },
-  cvPath: "/cv-setra-wicana.pdf",
+  cvPath: "",
   analytics: {
     enabled: false,
     token: "",
